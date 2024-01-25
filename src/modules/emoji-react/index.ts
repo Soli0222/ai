@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { bindThis } from '@/decorators.js';
 import { parse } from 'twemoji-parser';
 

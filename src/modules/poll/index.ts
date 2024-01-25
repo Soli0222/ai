@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { bindThis } from '@/decorators.js';
 import Message from '@/message.js';
 import Module from '@/module.js';

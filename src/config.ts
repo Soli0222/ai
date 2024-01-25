@@ -1,4 +1,3 @@
-// @ts-nocheck
 type Config = {
 	host: string;
 	serverName?: string;

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { bindThis } from '@/decorators.js';
 import chalk from 'chalk';
 
