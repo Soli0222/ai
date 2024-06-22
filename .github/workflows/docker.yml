@@ -26,11 +26,13 @@ jobs:
 
       - name: Prepare Build Arg
         id: prepare_build_arg
-        run: |1
+        run: |
           CURRENT_TAG=${GITHUB_REF#refs/tags/}
-          echo ::set-output name=CURRENT_TAG::${CURRENT_TAG}
-          echo ::set-output name=RUBY_VERSION::${CURRENT_TAG%-*}
-          echo ::set-output name=BUNDLER_VERSION::${CURRENT_TAG##*-}
+          echo "CURRENT_TAG=${CURRENT_TAG}" >> $GITHUB_ENV
+          RUBY_VERSION=${CURRENT_TAG%-*}
+          echo "RUBY_VERSION=${RUBY_VERSION}" >> $GITHUB_ENV
+          BUNDLER_VERSION=${CURRENT_TAG##*-}
+          echo "BUNDLER_VERSION=${BUNDLER_VERSION}" >> $GITHUB_ENV
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
@@ -43,15 +45,15 @@ jobs:
         with:
           push: true
           tags: |
-            soli0222/ai:${{ steps.prepare_build_arg.outputs.CURRENT_TAG }}
+            soli0222/ai:${{ env.CURRENT_TAG }}
             soli0222/ai:latest
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.clone_url }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
           build-args: |
-            RUBY_VERSION=${{ steps.prepare_build_arg.outputs.RUBY_VERSION }}
-            BUNDLER_VERSION=${{ steps.prepare_build_arg.outputs.BUNDLER_VERSION }}
+            RUBY_VERSION=${{ env.RUBY_VERSION }}
+            BUNDLER_VERSION=${{ env.BUNDLER_VERSION }}
 
       - name: Move cache
         run: |
